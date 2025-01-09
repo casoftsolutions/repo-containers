@@ -4,16 +4,28 @@ on:
       branches:
       - main
 jobs:
-    build-test:
-        runs-on: ubuntu-latest
-        container:
-            image: python:3.10.14-alpine3.20
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-            - name: Verificar a versão do Python
-              run: python3 --version
-            - name: Instalação curl Alpine
-              run: apk add curl
-            - name: Executando o curl 
-              run: curl https://www.google.com
+
+  build-test-container:
+    runs-on: ubuntu-latest
+    container:
+        image: python:3.10.14-alpine3.20
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+        - name: Verificar a versão do Python
+          run: python3 --version
+        - name: Instalação curl Alpine
+          run: apk add curl
+        - name: Executando o curl 
+          run: curl https://www.google.com
+        
+  build-test-actions:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Execução do Runner
+          run: cat /etc/os-release
+        - name: Execução no Container
+          uses: docker://alpine:latest
+          with:
+              entrypoint: cat
+              args: /etc/os-release  
